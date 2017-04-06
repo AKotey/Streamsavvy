@@ -4,20 +4,30 @@ Created on Fri Feb  3 11:35:25 2017
 
 @author: Zachary Shay
 """
-
 import scrapy
 import json
+import pika
+connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+channel = connection.channel()
+
+channel.queue_declare(queue='hello')
+
+def callback(ch, method, properties, body):
+    print(" [x] Received %r" % body)
+    start_urls = body
+channel.basic_consume(callback,
+                      queue='hello',
+                      no_ack=True)
+
+print(' [*] Waiting for messages. To exit press CTRL+C')
+channel.start_consuming()
+
 from flask import Flask
 app = Flask(__name__)
 @app.route("/")
     
 class VideoCrawl(scrapy.Spider):
     name = "video"
-
-    start_urls = [
-        'http://www.w3schools.com/html/html5_video.asp',
-        'https://www.html5rocks.com/en/tutorials/video/basics/',
-            ]
             
     def parse(self, response):
      # follow links to author pages
