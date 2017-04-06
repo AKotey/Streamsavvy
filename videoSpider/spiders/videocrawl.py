@@ -7,14 +7,14 @@ Created on Fri Feb  3 11:35:25 2017
 import scrapy
 import json
 import pika
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+
+connection = pika.BlockingConnection(pika.ConnectionParameters(host='process.env.RABBITMQ_BIGWIG_URL'))
 channel = connection.channel()
 
 channel.queue_declare(queue='hello')
 
 def callback(ch, method, properties, body):
     print(" [x] Received %r" % body)
-    start_urls = body
 channel.basic_consume(callback,
                       queue='hello',
                       no_ack=True)
