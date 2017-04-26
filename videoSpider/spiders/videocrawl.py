@@ -6,11 +6,13 @@ Created on Fri Feb  3 11:35:25 2017
 """
 import scrapy
 import json
-import pika
+
     
 class VideoCrawl(scrapy.Spider):
     name = "video"
-            
+    start_urls = [
+    "https://www.w3schools.com/html/html5_video.asp"
+    ]
     def parse(self, response):
      # follow links to author pages
         for href in response.css(' a::attr(href)').extract():
