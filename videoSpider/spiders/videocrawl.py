@@ -13,12 +13,13 @@ class VideoCrawl(scrapy.Spider):
     start_urls = [
     "https://www.w3schools.com/html/html5_video.asp"
     ]
+    
     def parse(self, response):
      # follow links to author pages
         for href in response.css(' a::attr(href)').extract():
             yield scrapy.Request(response.urljoin(href),
                                  callback=self.parse_video)
-
+        
     def parse_video(self, response):
         for video in response.css('video'):
             http_exists = video.xpath('./source/@src').extract_first()[:4]
@@ -47,4 +48,4 @@ class VideoCrawl(scrapy.Spider):
                         yield{
                             'video': full_url
                         }
-
+    
