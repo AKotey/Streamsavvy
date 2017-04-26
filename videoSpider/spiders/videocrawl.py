@@ -16,6 +16,7 @@ class VideoCrawl(scrapy.Spider):
 
     start_urls = [
         'http://www.w3schools.com/html/html5_video.asp',
+        'https://www.html5rocks.com/en/tutorials/video/basics/',
             ]
             
     def parse(self, response):
