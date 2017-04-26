@@ -8,7 +8,7 @@ import scrapy
 import json
 import pika
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(host=''))
+connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['RABBITMQ_BIGWIG_']))
 channel = connection.channel()
 
 channel.queue_declare(queue='hello')
